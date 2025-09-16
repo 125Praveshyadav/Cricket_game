@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cricket GAME</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <!--    
+    <img class = "ball" src ="ball.png" alt="ball">
+    <img class = "stamp" src ="stump.png" alt="stump"> -->
+
+    <div class="header">
+      <div class="main">
+        <img
+          class="main-img"
+          src="logo.png"
+          alt="cricket"
+          width="350px"
+          height="350px"
+        />
+      </div>
+      <div class="container">
+        <h1 class="heading">Bat Ball Stump GAME</h1>
+        <h3 class="sub-heading">Click on any image to play the game</h3>
+        <button id="bat" onclick="playGame('bat')">
+          <img
+            class="bat-img"
+            src="bat.png"
+            alt="bat"
+            width="80px"
+            height="80px"
+          />
+        </button>
+
+        <button id="ball" onclick="playGame('ball')">
+          <img
+            class="bat-img"
+            src="Ball.png"
+            alt="bat"
+            width="80px"
+            height="80px"
+          />
+        </button>
+
+        <button id="stamp" onclick="playGame('stamp')">
+          <img
+            class="bat-img"
+            src="Stump.png"
+            alt="bat"
+            width="80px"
+            height="80px"
+          />
+        </button>
+        <h2 id="result">Result</h2>
+        <h2 id="score">You Score: 0</h2>
+        <h2 id="computerScore">Computer Score: 0</h2>
+        <h2 id="ties">No of Ties: 0</h2>
+
+        <button id="reset" onclick="resetGame()">Reset Game</button>
+      </div>
+    </div>
+    <header>
+      <h1>By Pravesh Khurana</h1>
+    </header>
+  </body>
+  <script>
+    let pro = localStorage.getItem("Score");
+    if (pro) {
+      Score = JSON.parse(pro);
+    } else {
+      Score = {
+        userScore: 0,
+        computerScore: 0,
+        NoTies: 0,
+      };
+    }
+
+    const result = document.getElementById("result");
+    const scoreDisplay = document.getElementById("score");
+    const computerScoreDisplay = document.getElementById("computerScore");
+    const tiesDisplay = document.getElementById("ties");
+
+    function playGame(userChoice) {
+      const choices = ["bat", "ball", "stamp"];
+      const computerChoice =
+        choices[Math.floor(Math.random() * choices.length)];
+
+      if (userChoice === computerChoice) {
+        Score.NoTies++;
+        result.textContent = `It's a tie! You both chose ${userChoice}.`;
+      } else if (
+        (userChoice === "bat" && computerChoice === "ball") ||
+        (userChoice === "ball" && computerChoice === "stamp") ||
+        (userChoice === "stamp" && computerChoice === "bat")
+      ) {
+        Score.userScore++;
+        result.textContent = `You WON! \n You Choose ${userChoice} and \n Computer Choose ${computerChoice}.`;
+      } else {
+        Score.computerScore++;
+        result.textContent = `You LOSE! \n You Choose ${computerChoice} and \n Computer Choose ${userChoice}.`;
+      }
+      scoreDisplay.style.color = "darkblue";
+
+      computerScoreDisplay.style.color = "darkblue";
+      scoreDisplay.textContent = `Score: You WON ${Score.userScore} `;
+      computerScoreDisplay.textContent = ` Computer WON ${Score.computerScore}`;
+      tiesDisplay.textContent = `No of Ties: ${Score.NoTies}`;
+      localStorage.setItem("Score", JSON.stringify(Score));
+    }
+    function resetGame() {
+      Score = {
+        userScore: 0,
+        computerScore: 0,
+        NoTies: 0,
+      };
+      localStorage.removeItem("Score");
+      scoreDisplay.textContent = `Score: 0`;
+      computerScoreDisplay.textContent = ` Computer Score: 0`;
+      tiesDisplay.textContent = `No of Ties: 0`;
+      result.textContent = `Result`;
+    }
+  </script>
+</html>
